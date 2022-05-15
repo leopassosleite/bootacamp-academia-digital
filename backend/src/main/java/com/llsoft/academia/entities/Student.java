@@ -1,32 +1,21 @@
 package com.llsoft.academia.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
 @Entity
 @Table(name = "tb_students")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -35,15 +24,38 @@ public class Student implements Serializable {
 	private Long id;
 	private String name;
 	private String lastName;
+	private String uF;
+	private String city;
+	private String adress;
 	private String district;
-	private LocalDate birthDate;
-
-	@Column(unique = true)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy 'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant birthDate;
+	private String phone;
 	private String cpf;
 
-	@OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-	@JsonIgnore
-	private List<PhysicalAssessment> assessment = new ArrayList<>();
+	@OneToMany(mappedBy = "client")
+	private List<Registration> registration = new ArrayList<>();
+	
+
+	@OneToMany(mappedBy = "client")
+	private List<Stats> stats = new ArrayList<>();
+
+	public Student() {
+	}
+
+	public Student(Long id, String name, String lastName, String uF, String city, String adress, String district,
+			Instant birthDate, String phone, String cpf) {
+		this.id = id;
+		this.name = name;
+		this.lastName = lastName;
+		this.uF = uF;
+		this.city = city;
+		this.adress = adress;
+		this.district = district;
+		this.birthDate = birthDate;
+		this.phone = phone;
+		this.cpf = cpf;
+	}
 
 	public Long getId() {
 		return id;
@@ -69,6 +81,30 @@ public class Student implements Serializable {
 		this.lastName = lastName;
 	}
 
+	public String getuF() {
+		return uF;
+	}
+
+	public void setuF(String uF) {
+		this.uF = uF;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getAdress() {
+		return adress;
+	}
+
+	public void setAdress(String adress) {
+		this.adress = adress;
+	}
+
 	public String getDistrict() {
 		return district;
 	}
@@ -77,12 +113,20 @@ public class Student implements Serializable {
 		this.district = district;
 	}
 
-	public LocalDate getBirthDate() {
+	public Instant getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(Instant birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getCpf() {
@@ -93,7 +137,11 @@ public class Student implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public void setAssessment(List<PhysicalAssessment> assessment) {
-		this.assessment = assessment;
+	public List<Registration> getRegistration() {
+		return registration;
+	}
+
+	public List<Stats> getStats() {
+		return stats;
 	}
 }

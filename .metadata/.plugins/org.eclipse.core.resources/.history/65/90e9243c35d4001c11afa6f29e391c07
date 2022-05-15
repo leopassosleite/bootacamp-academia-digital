@@ -1,0 +1,58 @@
+package com.llsoft.academia.entities;
+
+import java.io.Serializable;
+import java.time.Instant;
+
+import javax.persistence.Entity;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name = "tb_payment")
+public class Payment implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
+	private Instant dateRegistration;
+	
+	@OneToOne
+	@MapsId
+	@JsonIgnore
+	private Registration registration;
+	
+	public Payment() {
+	}
+
+	public Payment(Long id, Instant dateRegistration, Registration registration) {
+		this.id = id;
+		this.dateRegistration = dateRegistration;
+		this.registration = registration;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Instant getDateRegistration() {
+		return dateRegistration;
+	}
+
+	public void setDateRegistration(Instant dateRegistration) {
+		this.dateRegistration = dateRegistration;
+	}
+
+	public Registration getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(Registration registration) {
+		this.registration = registration;
+	}
+}

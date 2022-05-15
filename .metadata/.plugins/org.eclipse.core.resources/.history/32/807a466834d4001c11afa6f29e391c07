@@ -1,0 +1,36 @@
+package com.llsoft.academia.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.llsoft.academia.entities.PhysicalAssessment;
+import com.llsoft.academia.repositories.PhysicalAssessmentRepository;
+import com.llsoft.academia.services.exception.DatabaseException;
+import com.llsoft.academia.services.exception.ResourceNotFoundException;
+
+@Service
+public class PhysicalAssessmentService {
+
+	@Autowired
+	private PhysicalAssessmentRepository physicalAssessmentRepository;
+	
+	public List<PhysicalAssessment> findAll() {
+		return physicalAssessmentRepository.findAll();
+	}
+
+	public PhysicalAssessment findById(Long id) {
+		Optional<PhysicalAssessment> obj = physicalAssessmentRepository.findById(id);
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+
+	public PhysicalAssessment insert(PhysicalAssessment obj) {
+		return physicalAssessmentRepository.save(obj);
+	}
+}

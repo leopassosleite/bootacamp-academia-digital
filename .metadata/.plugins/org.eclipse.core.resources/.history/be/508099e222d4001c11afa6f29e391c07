@@ -1,0 +1,44 @@
+package com.llsoft.academia.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.llsoft.academia.entities.Registration;
+import com.llsoft.academia.repositories.RegistrationRepository;
+import com.llsoft.academia.services.exception.DatabaseException;
+import com.llsoft.academia.services.exception.ResourceNotFoundException;
+
+@Service
+public class RegistrationService {
+
+	@Autowired
+	private RegistrationRepository registrationRepository;
+
+	public List<Registration> findAll() {
+		return registrationRepository.findAll();
+	}
+
+	public Registration findById(Long id) {
+		Optional<Registration> obj = registrationRepository.findById(id);
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+	
+	public Registration insert(Registration obj) {
+		return registrationRepository.save(obj);
+	}
+
+	public void delete(Long id) {
+		try {
+			registrationRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
+}

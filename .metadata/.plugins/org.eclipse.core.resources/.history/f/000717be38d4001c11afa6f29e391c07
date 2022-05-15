@@ -1,0 +1,8 @@
+package com.llsoft.academia.entities;
+
+public class Stats {
+	
+	private Double Weight;
+	private Double Height;
+
+}

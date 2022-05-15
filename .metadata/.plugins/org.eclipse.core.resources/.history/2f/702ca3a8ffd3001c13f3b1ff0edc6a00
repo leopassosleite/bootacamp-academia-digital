@@ -1,0 +1,24 @@
+package com.llsoft.academia.services;
+
+import java.util.List;
+
+
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.llsoft.academia.dto.StudentDTO;
+import com.llsoft.academia.entities.Student;
+import com.llsoft.academia.repositories.StudentRepository;
+
+@Service
+public class StudentService {
+	
+	private StudentRepository studentRepository;
+
+	public List<Student> findAll() {
+		return studentRepository.findAll();
+	}
+}

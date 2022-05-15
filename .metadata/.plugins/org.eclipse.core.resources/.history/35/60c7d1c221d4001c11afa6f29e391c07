@@ -1,0 +1,70 @@
+package com.llsoft.academia.services;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.llsoft.academia.dto.RegistrationDTO;
+import com.llsoft.academia.entities.Registration;
+import com.llsoft.academia.repositories.RegistrationRepository;
+import com.llsoft.academia.services.exception.DatabaseException;
+import com.llsoft.academia.services.exception.ResourceNotFoundException;
+
+@Service
+public class RegistrationService {
+
+	@Autowired
+	private RegistrationRepository registrationRepository;
+
+	@Transactional
+	public Page<RegistrationDTO> findAll(Pageable pageable) {
+		Page<Registration> result = registrationRepository.findAll(pageable);
+		Page<RegistrationDTO> page = result.map(x-> new RegistrationDTO(x));
+		return page;
+	}
+	
+	@Transactional
+	public RegistrationDTO findById(Long id) {
+		Registration result = registrationRepository.findById(id).get();
+		RegistrationDTO dto = new RegistrationDTO(result);
+		return dto;
+	}
+
+	public Registration insert(Registration obj) {
+		return registrationRepository.save(obj);
+	}
+	public void delete(Long id) {
+		try {
+			registrationRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
+
+	public Registration update(Long id, Registration obj) {
+		try {
+		Registration entity = registrationRepository.getOne(id);
+		updateData(entity, obj);
+		return registrationRepository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+	private void updateData(Registration registration, Registration obj) {
+		registration.setName(obj.getName());
+		registration.setLastName(obj.getLastName());
+		registration.setuF(obj.getuF());
+		registration.setCity(obj.getCity());
+		registration.setAdress(obj.getAdress());
+		registration.setDistrict(obj.getDistrict());
+		registration.setPhone(obj.getPhone());
+	}
+}

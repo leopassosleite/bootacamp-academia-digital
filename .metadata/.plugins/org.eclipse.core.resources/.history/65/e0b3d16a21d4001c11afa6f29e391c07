@@ -1,0 +1,40 @@
+package com.llsoft.academia.dto;
+
+import java.time.LocalDate;
+
+import com.llsoft.academia.entities.Student;
+
+public class RegistrationDTO {
+
+	private Long id;
+	private String name;
+	
+	public RegistrationDTO() {
+	}
+
+	public RegistrationDTO(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	public RegistrationDTO(Student student) {
+		id = student.getId();
+		name = student.getName();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}O
+}

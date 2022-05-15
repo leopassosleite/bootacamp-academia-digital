@@ -1,0 +1,40 @@
+package com.llsoft.academia.dto;
+
+import java.time.LocalDateTime;
+
+import com.llsoft.academia.entities.Registration;
+
+public class RegistrationDTO {
+
+	private Long id;
+	private LocalDateTime dateRegistration;
+	
+	public RegistrationDTO() {
+	}
+
+	public RegistrationDTO(Long id, LocalDateTime dateRegistration) {
+		this.id = id;
+		this.dateRegistration = dateRegistration;
+	}
+	
+	public RegistrationDTO(Registration registration) {
+		id = registration.getId();
+		dateRegistration = registration.getDateRegistration();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getDateRegistration() {
+		return dateRegistration;
+	}
+
+	public void setDateRegistration(LocalDateTime dateRegistration) {
+		this.dateRegistration = dateRegistration;
+	}
+}

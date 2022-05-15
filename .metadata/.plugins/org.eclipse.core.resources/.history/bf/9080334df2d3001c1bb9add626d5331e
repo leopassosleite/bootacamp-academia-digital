@@ -1,0 +1,36 @@
+package com.llsoft.academia.services;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.llsoft.academia.dto.StudentDTO;
+import com.llsoft.academia.entities.Student;
+import com.llsoft.academia.repositories.StudentRepository;
+
+@Service
+public class StudentService {
+	
+	private StudentRepository studentRepository;
+
+	public List<Student> findAll() {
+		return studentRepository.findAll();
+	}
+
+	@Transactional
+	public Page<StudentDTO> findAll(Pageable pageable) {
+		Page<Student> result = studentRepository.findAll(pageable);
+		Page<StudentDTO> page = result.map(x -> new StudentDTO(x));
+		return page;
+	}
+
+	public StudentDTO findById(Long id) {
+		Student result = studentRepository.findById(id).get();
+		StudentDTO dto = new StudentDTO(result);
+		return dto;
+	}
+}

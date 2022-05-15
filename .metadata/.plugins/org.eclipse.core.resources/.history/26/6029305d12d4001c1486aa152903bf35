@@ -1,0 +1,5 @@
+package com.llsoft.academia.services.exception;
+
+public class ResourceNotFoundException {
+
+}

@@ -1,0 +1,50 @@
+package com.llsoft.academia.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.llsoft.academia.dto.StudentDTO;
+import com.llsoft.academia.entities.Student;
+import com.llsoft.academia.repositories.RegistrationRepository;
+import com.llsoft.academia.services.exception.DatabaseException;
+import com.llsoft.academia.services.exception.ResourceNotFoundException;
+
+@Service
+public class RegistrationService {
+
+	@Autowired
+	private RegistrationRepository registrationRepository;
+
+	@Transactional
+	public Page<StudentDTO> findAll(Pageable pageable) {
+		Page<Student> result = registrationRepository.findAll(pageable);
+		Page<StudentDTO> page = result.map(x -> new StudentDTO(x));
+		return page;
+	}
+
+	@Transactional
+	public StudentDTO findById(Long id) {
+		Student result = registrationRepository.findById(id).get();
+		StudentDTO dto = new StudentDTO(result);
+		return dto;
+	}
+
+	public Student insert(Student obj) {
+		return registrationRepository.save(obj);
+	}
+
+	public void delete(Long id) {
+		try {
+			registrationRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
+}

@@ -1,0 +1,5 @@
+package com.llsoft.academia.dto;
+
+public class StudentDTO {
+
+}

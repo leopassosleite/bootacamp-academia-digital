@@ -1,0 +1,32 @@
+package com.llsoft.academia.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.llsoft.academia.entities.Student;
+import com.llsoft.academia.repositories.StudentRepository;
+import com.llsoft.academia.services.exception.ResourceNotFoundException;
+
+@Service
+public class StudentService {
+
+	@Autowired
+	private StudentRepository studentRepository;
+
+
+	public List<Student> findAll() {
+		return studentRepository.findAll();
+	}
+
+	public Student findById(Long id) {
+		Optional<Student> obj = studentRepository.findById(id);
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+
+	public Student insert(Student obj) {
+		return studentRepository.save(obj);
+	}
+}

@@ -1,0 +1,64 @@
+package com.llsoft.academia.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.llsoft.academia.entities.Student;
+import com.llsoft.academia.repositories.StudentRepository;
+import com.llsoft.academia.services.exception.DatabaseException;
+import com.llsoft.academia.services.exception.ResourceNotFoundException;
+
+@Service
+public class StudentService {
+
+	@Autowired
+	private StudentRepository studentRepository;
+	
+	public List<Student> findAll() {
+		return studentRepository.findAll();
+	}
+
+	public Student findById(Long id) {
+		Optional<Student> obj = studentRepository.findById(id);
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+
+	public Student insert(Student obj) {
+		return studentRepository.save(obj);
+	}
+	public void delete(Long id) {
+		try {
+			studentRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
+
+	public Student update(Long id, Student obj) {
+		try {
+		Student entity = studentRepository.getOne(id);
+		updateData(entity, obj);
+		return studentRepository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+	private void updateData(Student student, Student obj) {
+		student.setName(obj.getName());
+		student.setLastName(obj.getLastName());
+		student.setuF(obj.getuF());
+		student.setCity(obj.getCity());
+		student.setAdress(obj.getAdress());
+		student.setDistrict(obj.getDistrict());
+		student.setPhone(obj.getPhone());
+	}
+}

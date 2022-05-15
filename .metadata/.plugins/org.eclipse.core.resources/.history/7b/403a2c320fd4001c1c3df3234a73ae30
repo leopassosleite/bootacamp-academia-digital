@@ -1,0 +1,18 @@
+package com.llsoft.academia.services;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.llsoft.academia.entities.Student;
+import com.llsoft.academia.repositories.StudentRepository;
+
+@Service
+public class StudentService {
+	
+	private StudentRepository studentRepository;
+
+	public List<Student> findAll() {
+		return studentRepository.findAll();
+	}
+}

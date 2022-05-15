@@ -1,0 +1,84 @@
+package com.llsoft.academia.dto;
+
+import java.time.LocalDate;
+
+import com.llsoft.academia.entities.Student;
+
+public class RegistrationDTO {
+
+	private Long id;
+	private String name;
+	private String lastName;
+	private String district;
+	private LocalDate birthDate;
+	private String cpf;
+	
+	public RegistrationDTO() {
+	}
+
+	public RegistrationDTO(Long id, String name, String lastName, String district, LocalDate birthDate, String cpf) {
+		this.id = id;
+		this.name = name;
+		this.lastName = lastName;
+		this.district = district;
+		this.birthDate = birthDate;
+		this.cpf = cpf;
+	}
+	
+	public RegistrationDTO(Student student) {
+		id = student.getId();
+		name = student.getName();
+		lastName = student.getLastName();
+		district = student.getDistrict();
+		birthDate = student.getBirthDate();
+		cpf = student.getCpf();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+}

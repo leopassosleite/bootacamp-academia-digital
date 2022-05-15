@@ -1,0 +1,60 @@
+package com.llsoft.academia.controllers;
+
+import java.net.URI;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.llsoft.academia.dto.RegistrationDTO;
+import com.llsoft.academia.entities.Registration;
+import com.llsoft.academia.services.RegistrationService;
+
+@RestController
+@RequestMapping(value = "/registrations")
+public class RegistrationController {
+	
+	@Autowired
+	private RegistrationService registrationService;
+	
+
+	@GetMapping
+	public Page<RegistrationDTO> findAll(Pageable pageagle) {
+		return registrationService.findAll(pageagle);
+	}
+	
+	@GetMapping(value= "/{id}")
+	public RegistrationDTO findById(@PathVariable Long id) {
+		return registrationService.findById(id);
+	}
+
+	@PostMapping
+	public ResponseEntity<Registration> insert(@RequestBody Registration obj) {
+		obj = registrationService.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		registrationService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Registration> update(@PathVariable Long id, @RequestBody Registration obj) {
+		obj = registrationService.update(id, obj);
+		return ResponseEntity.ok().body(obj);
+	}
+}
+

@@ -1,0 +1,89 @@
+package com.llsoft.academia.entities;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "PhysicalAssessments")
+public class PhysicalAssessment implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "student_id")
+	private Student students;
+
+	private LocalDateTime evaluationDate = LocalDateTime.now();
+
+	@Column(name = "weight_current")
+	private double Weight;
+
+	@Column(name = "height_current")
+	private double height;
+	
+	
+
+	public PhysicalAssessment() {
+	}
+
+	public PhysicalAssessment(Long id, Student students, LocalDateTime evaluationDate, double weight, double height) {
+		this.id = id;
+		this.students = students;
+		this.evaluationDate = evaluationDate;
+		Weight = weight;
+		this.height = height;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Student getStudents() {
+		return students;
+	}
+
+	public void setStudents(Student students) {
+		this.students = students;
+	}
+
+	public LocalDateTime getEvaluationDate() {
+		return evaluationDate;
+	}
+
+	public void setEvaluationDate(LocalDateTime evaluationDate) {
+		this.evaluationDate = evaluationDate;
+	}
+
+	public double getWeight() {
+		return Weight;
+	}
+
+	public void setWeight(double weight) {
+		Weight = weight;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+}

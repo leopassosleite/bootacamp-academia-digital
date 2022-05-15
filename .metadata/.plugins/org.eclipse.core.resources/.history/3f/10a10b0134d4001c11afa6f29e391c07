@@ -1,0 +1,5 @@
+package com.llsoft.academia.entities;
+
+public class Payment {
+
+}
